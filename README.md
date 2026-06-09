@@ -27,15 +27,6 @@ It is built as a single self-contained JavaScript file: no build step, no depend
 
 When Miku starts, it opens a compact control panel in Discord. You choose the quests, filter by reward type, toggle auto-enrol or auto-claim, then press `START`. Miku queues the work, shows each quest as a card, updates progress as it goes, and leaves a manual claim button when a reward cannot be claimed automatically.
 
-## Project Structure
-
-```text
-.
-|-- script.js   # Main Miku quest automation script
-|-- LICENSE     # MIT licence
-`-- README.md   # Project documentation
-```
-
 ## Requirements
 
 - Discord desktop or browser client
