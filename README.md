@@ -2,7 +2,7 @@
 
 Miku is a polished in-client helper script for Discord Quests. It injects a draggable dashboard into Discord, lets you choose which quests to run, tracks progress live, and handles supported quest types with built-in retry and cleanup logic.
 
-> Use at your own risk. Automating Discord client behavior may violate Discord's Terms of Service and could put your account at risk.
+> Use at your own risk. Automating Discord client behaviour may violate Discord's Terms of Service and could put your account at risk.
 
 ## Highlights
 
@@ -13,7 +13,7 @@ Miku is a polished in-client helper script for Discord Quests. It injects a drag
 - Optional auto-claim attempt after completion
 - Draggable dashboard with live progress cards and logs
 - Stop and cleanup controls for patched Discord stores/listeners
-- Rate-limit-aware request queue with retry/backoff behavior
+- Rate-limit-aware request queue with retry/backoff behaviour
 - Local UI position persistence through `localStorage`
 
 ## Repository
@@ -21,7 +21,7 @@ Miku is a polished in-client helper script for Discord Quests. It injects a drag
 ```text
 .
 |-- script.js   # Main Miku quest automation script
-|-- LICENSE     # MIT license
+|-- LICENSE     # MIT licence
 `-- README.md   # Project documentation
 ```
 
@@ -57,7 +57,7 @@ No package install is required. This repository is a standalone JavaScript scrip
 
 ## Supported Quest Types
 
-| Quest Type | Behavior |
+| Quest Type | Behaviour |
 | --- | --- |
 | Video | Sends timed video progress updates until the target duration is reached. |
 | Game | Temporarily patches Discord's running game store to simulate a game session. |
@@ -85,7 +85,7 @@ const CONFIG = {
 
 Common tweaks:
 
-- Change `THEME`, `SUCCESS`, `WARN`, or `ERR` to customize dashboard colors.
+- Change `THEME`, `SUCCESS`, `WARN`, or `ERR` to customise dashboard colours.
 - Set `HIDE_ACTIVITY` to `true` to suppress fake activity RPC status where supported.
 - Adjust `MAX_LOG_ITEMS` to keep more or fewer dashboard log entries.
 
@@ -108,7 +108,7 @@ Common tweaks:
 - Do not use this on accounts you cannot afford to lose.
 - The script is provided as-is with no guarantee of reliability or account safety.
 
-## License
+## Licence
 
 MIT License. See `LICENSE` for details.
 
