@@ -1,22 +1,33 @@
 # Miku - Discord Auto Quest
 
-Miku is a polished in-client helper script for Discord Quests. It injects a draggable dashboard into Discord, lets you choose which quests to run, tracks progress live, and handles supported quest types with built-in retry and cleanup logic.
+![JavaScript](https://img.shields.io/badge/JavaScript-Standalone-f7df1e?style=for-the-badge&logo=javascript&logoColor=111)
+![Discord](https://img.shields.io/badge/Discord-Quest%20Helper-5865f2?style=for-the-badge&logo=discord&logoColor=white)
+![Licence](https://img.shields.io/badge/Licence-MIT-38d9d0?style=for-the-badge)
 
-> Use at your own risk. Automating Discord client behaviour may violate Discord's Terms of Service and could put your account at risk.
+Miku is a sleek Discord Quest automation script with a full in-client dashboard. Drop it into Discord, pick the quests you want, and watch Miku track progress, handle supported quest types, and keep the UI tidy while it works.
 
-## Highlights
+It is built as a single self-contained JavaScript file: no build step, no dependencies, no setup ceremony.
 
-- Quest picker with selectable quests before execution
+> Use at your own risk. This script interacts with Discord's private client internals. Automating client behaviour may violate Discord's Terms of Service and can put your account at risk.
+
+## What Makes It Nice
+
+- Clean draggable dashboard that lives inside Discord
+- Quest picker before anything starts, so you stay in control
 - Reward filters for in-game items, avatar decorations, orbs, and other rewards
-- Support for video, game, stream, activity, and achievement-style quests
-- Optional auto-enrollment for available quests
-- Optional auto-claim attempt after completion
-- Draggable dashboard with live progress cards and logs
-- Stop and cleanup controls for patched Discord stores/listeners
-- Rate-limit-aware request queue with retry/backoff behaviour
-- Local UI position persistence through `localStorage`
+- Live task cards with progress bars, statuses, logs, and claim buttons
+- Video, game, stream, activity, and achievement quest handling
+- Optional auto-enrol before each quest
+- Optional auto-claim after completion, with fallback when Discord asks for captcha/manual action
+- Rate-limit-aware request queue with jittered retries and backoff
+- Cleanup hooks for patched stores, listeners, stream metadata, and fake activity state
+- Saved dashboard position through `localStorage`
 
-## Repository
+## Preview In Words
+
+When Miku starts, it opens a compact control panel in Discord. You choose the quests, filter by reward type, toggle auto-enrol or auto-claim, then press `START`. Miku queues the work, shows each quest as a card, updates progress as it goes, and leaves a manual claim button when a reward cannot be claimed automatically.
+
+## Project Structure
 
 ```text
 .
@@ -27,47 +38,50 @@ Miku is a polished in-client helper script for Discord Quests. It injects a drag
 
 ## Requirements
 
-- Discord desktop or web client
-- A Discord account with available Quests
-- Browser/client DevTools access
+- Discord desktop or browser client
+- Active, incomplete Discord Quests
+- DevTools console access
 
-No package install is required. This repository is a standalone JavaScript script.
+No package manager is required. If you can open Discord and paste JavaScript into the console, you have everything needed to run the script.
 
-## Usage
+## Quick Start
 
-1. Open Discord in the desktop client or browser.
-2. Open DevTools and switch to the Console tab.
-3. Paste the contents of `script.js` into the console.
-4. Press Enter to run it.
-5. Use the Miku quest picker to select quests and options.
-6. Click `START` and watch progress in the dashboard.
+1. Open Discord.
+2. Open DevTools.
+3. Go to the Console tab.
+4. Paste the contents of `script.js`.
+5. Press Enter.
+6. Select your quests in the Miku picker.
+7. Click `START`.
 
-## Dashboard Controls
+## Controls
 
-- `START` begins the selected quests.
-- `DESELECT ALL` / `SELECT ALL` toggles visible quests in the picker.
-- Reward filter chips show or hide quest groups by reward type.
-- `Auto-enroll in quests` enrolls quests immediately before execution.
-- `Auto-claim rewards` tries to claim completed rewards automatically.
-- `CLAIM REWARD` appears when a quest is complete and needs manual claiming.
-- `GO TO QUESTS` appears when an achievement-style quest needs user action.
-- `STOP` shuts down the script and runs cleanup hooks.
-- `HIDE` hides the dashboard.
-- `Shift + .` toggles dashboard visibility.
+| Control | What It Does |
+| --- | --- |
+| `START` | Runs the selected quests. |
+| `SELECT ALL` / `DESELECT ALL` | Toggles visible quests in the picker. |
+| Reward filters | Shows or hides quests by reward type. |
+| `Auto-enrol in quests` | Enrols each quest just before running it. |
+| `Auto-claim rewards` | Tries to claim completed rewards automatically. |
+| `CLAIM REWARD` | Manually claims a completed quest reward. |
+| `GO TO QUESTS` | Opens the quest area when an achievement needs user action. |
+| `STOP` | Stops Miku and runs cleanup. |
+| `HIDE` | Hides the dashboard. |
+| `Shift + .` | Toggles dashboard visibility. |
 
 ## Supported Quest Types
 
-| Quest Type | Behaviour |
+| Quest Type | How Miku Handles It |
 | --- | --- |
 | Video | Sends timed video progress updates until the target duration is reached. |
 | Game | Temporarily patches Discord's running game store to simulate a game session. |
 | Stream | Temporarily patches stream metadata to simulate a stream session. |
 | Activity | Sends heartbeat updates through an available voice/private channel context. |
-| Achievement | Attempts heartbeat completion first, then falls back to manual/action-required tracking. |
+| Achievement | Attempts heartbeat completion first, then falls back to action-required tracking. |
 
 ## Configuration
 
-User-editable settings live near the top of `script.js`:
+Safe user-editable settings live near the top of `script.js`:
 
 ```js
 const CONFIG = {
@@ -83,30 +97,40 @@ const CONFIG = {
 };
 ```
 
-Common tweaks:
+Useful tweaks:
 
 - Change `THEME`, `SUCCESS`, `WARN`, or `ERR` to customise dashboard colours.
-- Set `HIDE_ACTIVITY` to `true` to suppress fake activity RPC status where supported.
-- Adjust `MAX_LOG_ITEMS` to keep more or fewer dashboard log entries.
+- Set `HIDE_ACTIVITY` to `true` if you want to suppress fake activity RPC status where supported.
+- Increase `MAX_LOG_ITEMS` if you want a longer dashboard log history.
 
 ## Troubleshooting
 
-| Problem | What to Check |
+| Problem | Likely Fix |
 | --- | --- |
-| `Webpack chunk not found` | Make sure the script is running inside Discord, not on another page. |
-| `Core modules not found` | Discord internals may have changed. Reload Discord and try again. |
-| No quests appear | You may have no active, incomplete, non-expired quests. |
-| Activity quest fails | The script needs an available private or guild voice channel context. |
-| Auto-claim fails | Discord may require captcha or manual claim confirmation. Use `CLAIM REWARD`. |
-| Dashboard disappeared | Press `Shift + .` or rerun the script after stopping/reloading. |
+| `Webpack chunk not found` | Run the script inside Discord, not another page. |
+| `Core modules not found` | Reload Discord and try again. Discord internals may have changed. |
+| No quests appear | There may be no active, incomplete, non-expired quests available. |
+| Activity quest fails | Miku needs an available private or guild voice channel context. |
+| Auto-claim fails | Discord may require captcha or manual confirmation. Use `CLAIM REWARD`. |
+| Dashboard is hidden | Press `Shift + .` or rerun after stopping/reloading Discord. |
+| A quest gets skipped | It may be expired, region-restricted, removed, or returning a client error. |
 
-## Safety Notes
+## Notes For Users
 
-- This script interacts with Discord's private client internals and APIs.
-- Discord updates can break the script without warning.
-- Automated quest completion may violate platform rules.
-- Do not use this on accounts you cannot afford to lose.
-- The script is provided as-is with no guarantee of reliability or account safety.
+- Miku does not need your token pasted anywhere.
+- Miku runs in the current Discord session through client internals.
+- Discord updates can break module lookup or quest behaviour without warning.
+- Some quests still require real user action, especially achievement-style activity quests.
+- Captcha-protected rewards cannot be bypassed by this script.
+
+## Safety
+
+This project is provided for educational and experimental use. It modifies client-side Discord state and calls Discord quest endpoints from inside the logged-in client session.
+
+- Do not use it on accounts you cannot afford to lose.
+- Do not assume it will survive Discord updates.
+- Do not expect support for every quest type or reward flow.
+- Use the `STOP` button before rerunning when possible.
 
 ## Licence
 
